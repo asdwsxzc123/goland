@@ -187,7 +187,7 @@ func consumer2(in <-chan int, idx int) {
 	}
 
 }
-func main() {
+func main85() {
 	producer := make(chan int, 5)
 	rand.Seed(time.Now().UnixNano())
 	quit := make(chan bool)
