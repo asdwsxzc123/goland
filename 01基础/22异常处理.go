@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"net"
+	"os"
 )
 
 /* error */
@@ -72,4 +74,18 @@ func test25() {
 func main2204() {
 	test24(11)
 	test25()
+}
+
+func errFunc(err error, info string) {
+	if err != nil {
+		fmt.Println(info, err)
+		// return // 返回函数调用
+		// runtime.Goexit() // go程结束
+		os.Exit(1)
+	}
+
+}
+func main() {
+	listener, err := net.Listen("tcp", "127.0.0.1:8008")
+	errFunc(err, "listener")
 }

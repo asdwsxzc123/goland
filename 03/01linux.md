@@ -1,4 +1,5 @@
-### Linux
+## Linux
+### 1.文件管理
 1. pwd 查看当前路径
 2. shell: 命令解析器.默认运行在终端当中的程序 (unix--born)
 3. bash(born again shell): linux版的shell
@@ -14,6 +15,7 @@
     ls -d 查看目录属性
     ls test[0-9].? -l > out 将test的文件写入到out文件中
     ls test[0-9].? -l >> out 将test的文件追加到out文件中
+    ls -lh 以人类的方式显示
     man 手册
   ```
 11. mkfifo name: 创建管道文件
@@ -80,7 +82,7 @@
   zip: 
     压缩 zip -r 压缩包名(没有.zip后缀)
     解压: unzip -d 解压目录 
-```
+  ```
 20. 切换用户目录
   su 用户名 切换用户,不改变工作目录  
   su - 用户名 切换用户,改变工作目录  
@@ -96,6 +98,63 @@
   修改文件访问权限
   r,w,x: 4/2/1
   示例: r-x-w-r--: 4+1=5 2 4
+  1. 数字修改权限 chmod 777 ./123.txt 用户读写执行权限
+  2. 加号减号修改权限 chmod +x ./123.txt 添加执行权限 r读权限, w写权限
+23. w,r,x对于目录,文件的含义是否相同?
+  r: 查看文件内容  查看目录的内容(目录项)
+  w: 修改,删除文件内容 目录的内容可以被删除,修改,增加
+  x: 该文件可以执行   如果没有执行权限,目录不能进入
+
+### 2.系统管理
+1. ps进程命令
+  ps aux |grep xxx
+2. top进程查看
+3. kill 种子进程  
+  kill -l 查看所有的选项,9表示强行终止    
+  kill -9 id    
+4. cat & 暂停的含义,前台到后台
+5. fg 将暂停的启动
+  fg 恢复优先级最高  
+  fg 1 选择恢复的  
+6. jobs 查看暂停的程序
+7. 关机重启
+  reboot 重启  
+  shutdown -h now 关机 // 现在关机  
+  shutdown -h 20:25 // 20:25关机  
+  shutdown -h +10 // 加10分钟关机  
+  init 0 // 关机  
+  init 9 // 重启  
+8. ifconfig
+  ifconfig ens33 192.168.1.251 // 临时设置ip,重启失效  
+  ifconfig ens33 down // 关闭网络  
+  ifconfig ens33 up // 启动网络  
+  eth0 网口  
+  link encap 链路封装  
+9. 虚拟机网络设备  
+  桥接模式: 路由器给虚拟Linux单独分配一个ip地址,与windows所在同一网段  
+  NAT模式: linux虚拟机借助windows网口,访问外网,linux和Windows公用访问外网的IP
+
+10. find 查找文件
+  格式: find 带搜索目录 参数 "关键字"  
+  * -name  
+    find ./ -name "*.tar" 在目录中查找.tar结尾的文件  
+  * -type: f(普通文件),d,l,c,b,p,s  
+    find ./ -type "f"  
+  * -size 小写的k,大写的M  
+    find ./ -size 1000 搜索文件大小1000kb的  
+    find ./ -size +1k -size -5M  
+  * -maxdepth 1 访问目录的层数,防止在其他参数的之前  
+    find ./ -maxdepth 1 -type "f"  
+  * 命令可以一起使用  
+    find ./ -maxdepth 1 -type "f" -name "*.png"  
+  * -exec 对结果加执行  
+    find ./ -maxdepth 1 -type "f" -name "*.png" -exec ls -l {} \;  
+  * -| xargs ls -l  
+    find ./ -maxdepth 1 -type "f" -name "*.png" | xargs ls -l  
+11. grep 查找内容
+  grep -r/-R 'love' 文件目录, r递归执行  
+  结合find,xargs,grep  
+  find -maxdepth 1 -type "f" -print() | xargs -0 grep "love" -n (n表示行号) 
 ### 目录结构:
   * /bin 可执行文件,绿色的是可执行二进制文件的目录,ls,bash,ping
   * boot 放在系统启动是用到一些文件,linux内核文件:/boot/vmlinuz,系统引导管理器:/boot/grub
@@ -109,3 +168,13 @@
   * proc: 此目录的数据都在每次中,如系统核心,外部设备,网络状态,不占磁盘空间,/proc/cupinfo./proc/interrupts,/proc/dma,/proc/ioports,/proc/net
   * root: 系统管理员root的家目录
   * sbin: 放置系统管理员使用的可执行命令
+
+
+### 远程登录
+1. ssh 
+  * ssh -l user 127.0.0.1
+  * exit
+2. telnet
+3. 文件传输scp
+  scp -r ./test.txt user@127.0.0.1:/home/
+  scp -r 源目标 用户名@IP地址:目标位置
