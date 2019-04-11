@@ -89,7 +89,7 @@ func main142() {
 }
 
 // http客户端
-func main() {
+func main143() {
 	resp, err := http.Get("http://www.baidu.com")
 	errFunc(err, "get err")
 	defer resp.Body.Close()
