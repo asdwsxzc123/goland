@@ -62,3 +62,13 @@
 * :set autoindent 设置行号
 * 用户配置: 在用户宿主目录创建.vimrc,使用"是注释
 * 系统配置: /etc/vim/
+
+### linux服务
+1. crontab: 定时任务
+```sh
+crontab -e
+*/1 * * * * php /data/www/cron.php >> /tmp/cron.log
+```
+2. Ntpdate: 日期同步
+3. Logrotate: 日志切割
+4. supervisor: 进程管理

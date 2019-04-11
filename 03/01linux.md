@@ -155,6 +155,13 @@
   grep -r/-R 'love' 文件目录, r递归执行  
   结合find,xargs,grep  
   find -maxdepth 1 -type "f" -print() | xargs -0 grep "love" -n (n表示行号) 
+
+12. 硬件信息
+  内存: free -m 
+  硬盘: df -h 
+  负载: w/top
+  cpu个数:  cat /proc/cpuinfo
+  fdish
 ### 目录结构:
   * /bin 可执行文件,绿色的是可执行二进制文件的目录,ls,bash,ping
   * boot 放在系统启动是用到一些文件,linux内核文件:/boot/vmlinuz,系统引导管理器:/boot/grub
@@ -174,7 +181,57 @@
 1. ssh 
   * ssh -l user 127.0.0.1
   * exit
+  * yum install openssh-server // 安装ssh
+  * service sshd start //启动ssh
+  * chkconfig sshd on // 设置开机运行
+  * 管理: config ~/.ssh/config, HostName:主机名,Port 端口,User:用户名,IdentityFIle:秘钥文件的路径
+  ```sh
+  <!-- 1. 设置别名,直接连接,ssh chongqin -->
+  vim .ssh/config 
+  host "chongqin"
+    HostName 94.191.65.35
+    User root
+    Port 22
+
+  2. 创建秘钥
+  本地创建 .ssh/
+  ssh-keygen 创建秘钥
+  去服务端保存秘钥  vim .ssh/authorized_keys
+  保存本地公钥,
+  多个公钥,回车换行插入公钥
+  本地还需要: ssh-add ~/.ssh/name_rsa
+
+  3. 修改ssh端口
+  /etc/ssh/sshd_config 配置
+  ```
+  
+  * 工具: xshell,
+
 2. telnet
 3. 文件传输scp
   scp -r ./test.txt user@127.0.0.1:/home/
   scp -r 源目标 用户名@IP地址:目标位置
+
+### yum
+1. yum install xxx
+2. yum remove xxx
+3. yum search xxx
+4. 清除缓存: yum clean packages 
+5. 列出已安装: yum list
+6. 包信息: yum info xxx
+
+### 防火墙
+1. yum install firewalld
+2. service firewalld start
+3. service firewalld status
+4. service firewalld stop/disable
+
+### apache
+1. yum install httpd
+2. service httpd start
+3. service httpd stop
+### nginx
+1. yum install nginx
+2. service nginx start
+3. service nginx stop
+4. ps -ef |grep nginx 查询进程
